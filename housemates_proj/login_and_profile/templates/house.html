@@ -39,7 +39,9 @@
                             <h2>{{ house.nickname }}</h2>
                         </div>
                         <div class="col-6">
-                            <a class="float-right" href="/logout">Logout</a>
+                            <form action="/logout">
+                                <button class="fancyButton float-right">Logout</button>
+                            </form>
                         </div>
                     </div>
                     <div id="banner" style="height: 200px;" class="border">
@@ -59,7 +61,9 @@
                                 <p>{{ user.email }}</p>
                             </div>
                             <div class="col-6">
-                                <a href="#" class="float-right col-6 editProfile">Edit Profile</a>
+                                <form action="#">
+                                    <button class="float-right col-6 fancyButton">Edit Profile</button>
+                                </form>
                             </div>
                         </div>
                         <div class="text-center mt-5" id="notifications">
@@ -67,21 +71,61 @@
                             <hr>
                         </div>
                     </div>
+                    <div class="notificationFeed">
+                        <table class="table table-striped">
+                            <tbody>
+                                {% for notification in all_notifications %}
+                                <tr>
+                                    <td>{{ notification.date|date:"M d, y" }}</td>
+                                    <td>{{ notification.sender.first_name }} {{ notification.get_action_display }}
+                                        {% if notification.action == "CREATED" %}
+                                        {{ notification.house.nickname }}
+                                        {% elif notification.action == "INVITED" %}
+                                        {{ notification.receiver.first_name }}
+                                        {% elif notification.action == "PURCHASED" %}
+                                        {{ notification.item.name }}
+                                        {% elif notification.action == "HELPED" %}
+                                        {{ notification.item.name }}
+                                        {% endif %}
+                                    </td>
+                                    <td>{% if notification.action == "CREATED" %}
+                                        Yay!
+                                        {% elif notification.action == "INVITED" %}
+                                        Welcome!
+                                        {% elif notification.action == "PURCHASED" %}
+                                        {{ notification.item.price }}
+                                        {% elif notification.action == "HELPED" %}
+                                        {{ notification.item.price }}
+                                        {% endif %}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="col-4">
                 <div class="row">
                     <div class="col-7">
-                        <div class="mt-3 border text-center">
+                        <div class="mt-3 border">
                             <h3>Add a HouseMate</h3>
                             <hr>
-                            <form class="pl-2 pr-2" action="/profile/create_house" method="POST">
+                            <form class="pl-2 pr-2" action="/profile/main_house/add_housemate" method="POST">
                                 {% csrf_token %}
                                 <div class="form-group">
-                                    <label for="nickname">Nickname</label>
-                                    <input type="text" class="form-control" name="nickname" id="nickname">
+                                    <label for="email">Email</label>
+                                    <input type="text" class="form-control" name="email" id="email">
                                 </div>
-                                <button>Create</button>
+                                <form action="/profile/main_house/add_housemate">
+                                    <button class="fancyButton">Add</button>
+                                </form>
+                                {% if messages %}
+                                <ul class="messages">
+                                    {% for message in messages %}
+                                    <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
                             </form>
                         </div>
                     </div>
