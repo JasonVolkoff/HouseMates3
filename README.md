@@ -1,5 +1,5 @@
 # HouseMates
-An application which allows users to create a virtual space with their roommates, then track &amp; manage expenses, store a running tally of who owes money to whom, and track ownership of who owns what.
+An application which allows users to create a virtual space with their roommates, then track &amp; manage expenses, store a running tally of who owes money to whom, and track ownership of who owns what. This python-based project utilizes Django web framework, including user registration, validation, and password encryption. 
 
 
 ## **Minumum viable product:**
@@ -21,3 +21,4 @@ An application which allows users to create a virtual space with their roommates
 - Categorize all expenses and provide a breakdown report
 - Include user profile section to give ability to track personal bills
 - Include a chat system
+- Include chore notifications
